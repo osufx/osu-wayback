@@ -1,0 +1,13 @@
+{
+    "sql": {
+        "host": "127.0.0.1",
+        "user": "root",
+        "passwd": "toor",
+        "db": "osu-wayback"
+    },
+    "scrape": {
+        "delay": 1,
+        "max_attempts": 3,
+        "increase_delay_on_fail": true
+    }
+}
