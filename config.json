@@ -1,4 +1,11 @@
 {
+    "web": {
+        "debug": true,
+        "use_reloader": true,
+        "threaded": true,
+        "host": "127.0.0.1",
+        "port": 3003
+    },
     "sql": {
         "host": "127.0.0.1",
         "user": "root",
