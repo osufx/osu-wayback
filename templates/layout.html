@@ -1,3 +1,17 @@
+{% set header_links =
+    {
+        "Home": 
+        {
+            "endpoint": "home_index",
+            "href": "/home"
+        },
+        "Download": 
+        {
+            "endpoint": "download_index",
+            "href": "/download"
+        }
+    }
+%}
 <html>
     <head>
         <title>osu!wayback</title>
@@ -51,13 +65,15 @@
     <body class="pushable">
         <div class="ui large top fixed inverted menu transition hidden">
             <div class="ui container">
-                <a class="active item">Home</a>
-                <a class="item">Downloader</a>
+                {% for entry in header_links.keys() %}
+                <a class="{% if header_links[entry]["endpoint"] == request.endpoint %}active{% endif %} item" href="{{ header_links[entry]["href"] }}">{{entry}}</a>
+                {% endfor %}
             </div>
         </div>
-        <div class="ui vertical inverted sidebar menu left" style="">
-            <a class="active item">Home</a>
-            <a class="item">Downloader</a>
+        <div class="ui vertical inverted sidebar menu left">
+            {% for entry in header_links.keys() %}
+            <a class="{% if header_links[entry]["endpoint"] == request.endpoint %}active{% endif %} item" href="{{ header_links[entry]["href"] }}">{{entry}}</a>
+            {% endfor %}
         </div>
         <div class="pusher">
             <div class="ui inverted vertical masthead center aligned segment">
@@ -66,8 +82,9 @@
                         <a class="toc item">
                             <i class="sidebar icon"></i>
                         </a>
-                        <a class="active item">Home</a>
-                        <a class="item">Downloader</a>
+                        {% for entry in header_links.keys() %}
+                        <a class="{% if header_links[entry]["endpoint"] == request.endpoint %}active{% endif %} item" href="{{ header_links[entry]["href"] }}">{{entry}}</a>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
