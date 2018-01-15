@@ -1,16 +1,16 @@
 {% set header_links =
-    {
-        "Home": 
+    [
         {
+            "name": "Home",
             "endpoint": "home_index",
             "href": "/home"
         },
-        "Download": 
         {
+            "name": "Download",
             "endpoint": "download_index",
             "href": "/download"
         }
-    }
+    ]
 %}
 <html>
     <head>
@@ -65,14 +65,14 @@
     <body class="pushable">
         <div class="ui large top fixed inverted menu transition hidden">
             <div class="ui container">
-                {% for entry in header_links.keys() %}
-                <a class="{% if header_links[entry]["endpoint"] == request.endpoint %}active{% endif %} item" href="{{ header_links[entry]["href"] }}">{{entry}}</a>
+                {% for entry in header_links %}
+                <a class="{% if entry["endpoint"] == request.endpoint %}active{% endif %} item" href="{{ entry["href"] }}">{{entry["name"]}}</a>
                 {% endfor %}
             </div>
         </div>
         <div class="ui vertical inverted sidebar menu left">
-            {% for entry in header_links.keys() %}
-            <a class="{% if header_links[entry]["endpoint"] == request.endpoint %}active{% endif %} item" href="{{ header_links[entry]["href"] }}">{{entry}}</a>
+            {% for entry in header_links %}
+            <a class="{% if entry["endpoint"] == request.endpoint %}active{% endif %} item" href="{{ entry["href"] }}">{{entry["name"]}}</a>
             {% endfor %}
         </div>
         <div class="pusher">
@@ -82,8 +82,8 @@
                         <a class="toc item">
                             <i class="sidebar icon"></i>
                         </a>
-                        {% for entry in header_links.keys() %}
-                        <a class="{% if header_links[entry]["endpoint"] == request.endpoint %}active{% endif %} item" href="{{ header_links[entry]["href"] }}">{{entry}}</a>
+                        {% for entry in header_links %}
+                        <a class="{% if entry["endpoint"] == request.endpoint %}active{% endif %} item" href="{{ entry["href"] }}">{{entry["name"]}}</a>
                         {% endfor %}
                     </div>
                 </div>
