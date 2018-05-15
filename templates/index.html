@@ -1,12 +1,27 @@
 {% extends "layout.html" %}
+{% block headextra %}
+<style>
+	#bg::after {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		z-index: -1;
+		width: 100%;
+		height: 100%;
+		content: '';
+		background-size: cover;
+		background-image: url({{ url_for("static", filename="img/{}.jpg".format(range(1, 17) | random)) }});
+	}
+</style>
+{% endblock %}
 {% block body %}
-<div class="ui blue inverted vertical masthead center aligned segment">
+<div class="ui vertical masthead center aligned segment" id="bg">
 	{% include "header.html" %}
 	<div class="ui text container">
 		<h1 class="ui inverted header">
 			osu!wayback
 		</h1>
-		<h2>
+		<h2 class="ui inverted header">
 			{{
 				[
 					"Library for osu! history",

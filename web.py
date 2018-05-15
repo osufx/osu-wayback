@@ -17,5 +17,9 @@ def home_index():
 def download_index():
     return render_template("download.html")
 
+@app.route("/api")
+def api_index():
+    return render_template("api.html")
+
 if __name__ == "__main__":
     app.run(**config["web"])
