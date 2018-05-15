@@ -1,0 +1,11 @@
+<div class="ui container">
+	<div class="ui large secondary blue inverted menu">
+		<a class="toc item"><i class="sidebar icon"></i>
+		{% for entry in header_links %}
+		<a class="{% if entry["endpoint"] == request.endpoint %}active{% endif %} item toosmall" href="{{ entry["href"] }}">{{entry["name"]}}</a>
+		{% endfor %}
+		<div class="right item">
+			<a class="ui blue inverted button">Github</a>
+		</div>
+	</div>
+</div>

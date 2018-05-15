@@ -9,104 +9,58 @@
             "name": "Download",
             "endpoint": "download_index",
             "href": "/download"
-        }
+		},
+		{
+			"name": "API",
+			"endpoint": "api_index",
+			"href": "/api"
+		}
     ]
 %}
 <html>
     <head>
         <title>osu!wayback</title>
-        <link rel="stylesheet" type="text/css" href="{{ url_for("static", filename="semantic.min.css") }}">
-        <style>
-        .secondary.pointing.menu .toc.item {
-            display: none;
-        }
-        @media only screen and (max-width: 400px) {
-            .ui.fixed.menu {
-            display: none !important;
-            }
-            .secondary.pointing.menu .item,
-            .secondary.pointing.menu .menu {
-            display: none;
-            }
-            .secondary.pointing.menu .toc.item {
-            display: block;
-            }
-            .masthead.segment {
-            min-height: 73px;
-            }
-            .masthead h1.ui.header {
-            font-size: 2em;
-            margin-top: 1.5em;
-            }
-            .masthead h2 {
-            margin-top: 0.5em;
-            font-size: 1.5em;
-            }
-        }
-        </style>
-        <script src="{{ url_for("static", filename="jquery-3.2.1.min.js") }}"></script>
-        <script src="{{ url_for("static", filename="semantic.min.js") }}"></script>
-        <script>
-        $(document).ready(function() {
-            $('.masthead').visibility({
-                once: false,
-                onBottomPassed: function() {
-                $('.fixed.menu').transition('fade in');
-                },
-                onBottomPassedReverse: function() {
-                $('.fixed.menu').transition('fade out');
-                }
-            });
-            $('.ui.sidebar').sidebar('attach events', '.toc.item');
-        });
-        </script>
+		<link rel="stylesheet" type="text/css" href="{{ url_for("static", filename="dist/semantic-ui/semantic.min.css") }}">
+		<link rel="stylesheet" type="text/css" href="{{ url_for("static", filename="stylesheets/default.css") }}">
+		<link rel="stylesheet" type="text/css" href="{{ url_for("static", filename="stylesheets/pandoc-code-highlight.css") }}">
+
+        <script src="{{ url_for("static", filename="dist/jquery/jquery.min.js") }}"></script>
         {% block headextra %}{% endblock %}
     </head>
-    <body class="pushable">
-        <div class="ui large top fixed inverted menu transition hidden">
-            <div class="ui container">
-                {% for entry in header_links %}
-                <a class="{% if entry["endpoint"] == request.endpoint %}active{% endif %} item" href="{{ entry["href"] }}">{{entry["name"]}}</a>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="ui vertical inverted sidebar menu left">
-            {% for entry in header_links %}
-            <a class="{% if entry["endpoint"] == request.endpoint %}active{% endif %} item" href="{{ entry["href"] }}">{{entry["name"]}}</a>
-            {% endfor %}
-        </div>
-        <div class="pusher">
-            <div class="ui inverted vertical masthead center aligned segment">
-                <div class="ui container">
-                    <div class="ui large secondary inverted pointing menu">
-                        <a class="toc item">
-                            <i class="sidebar icon"></i>
-                        </a>
-                        {% for entry in header_links %}
-                        <a class="{% if entry["endpoint"] == request.endpoint %}active{% endif %} item" href="{{ entry["href"] }}">{{entry["name"]}}</a>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-            {% block body %}{% endblock %}
-            <div class="ui inverted vertical footer segment">
-                <div class="ui container">
-                    <div class="ui stackable inverted divided equal height stackable grid">
-                        <div class="three wide column">
-                            <h4 class="ui inverted header">About</h4>
-                            <div class="ui inverted link list">
-                                <a href="https://github.com/osufx/osu-wayback" class="item">Github</a>
-                            </div>
-                        </div>
-                        <div class="seven wide column">
-                            <h4 class="ui inverted header">Info</h4>
-                            <p>
-                                This app uses scraped data from osu.ppy.sh to generate this list. It is fully opensource and licensed under GPL-3.0
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <body>
+		<!--Header Menu-->
+		{% include "follow-header.html" %}
+		<!--Sidebar Menu-->
+		{% include "sidebar.html" %}
+		<!--Page-->
+		<div class="pusher">
+			{% block body %}{% endblock %}
+		</div>
+		<!--Footer-->
+		{% include "footer.html" %}
+		<script src="{{ url_for("static", filename="dist/semantic-ui/semantic.min.js") }}"></script>
+		<script>
+		$(document)
+			.ready(function() {
+			// fix menu when passed
+			$('.masthead')
+				.visibility({
+				once: false,
+				onBottomPassed: function() {
+					$('.fixed.menu').transition('fade in');
+				},
+				onBottomPassedReverse: function() {
+					$('.fixed.menu').transition('fade out');
+				}
+				})
+			;
+		
+			// create sidebar and attach to menu open
+			$('.ui.sidebar')
+				.sidebar('attach events', '.toc.item')
+			;
+			})
+		;
+		</script>
     </body>
 </html>

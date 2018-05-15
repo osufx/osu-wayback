@@ -1,0 +1,5 @@
+<div class="ui vertical blue inverted sidebar menu">
+	{% for entry in header_links %}
+	<a class="{% if entry["endpoint"] == request.endpoint %}active{% endif %} item" href="{{ entry["href"] }}">{{entry["name"]}}</a>
+	{% endfor %}
+</div>
