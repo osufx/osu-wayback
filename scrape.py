@@ -3,7 +3,7 @@
 import urllib.request, json
 import MySQLdb
 import MySQLdb.cursors
-import time
+import time, calendar
 import atexit
 
 finished = False
@@ -44,12 +44,12 @@ while not finished:
                         data["filename"],
                         data["file_hash"],
                         data["filesize"],
-                        data["timestamp"],
+                        calendar.timegm(time.strptime(data["timestamp"], "%Y-%m-%d %H:%M:%S")),
                         data["patch_id"],
                         data["url_full"],
                         data["url_patch"]
-                    ]
-                )
+                    ])
+                sql.commit()
                 completed = True
                 failed_streak = 0
                 print("target: {}, status: OK".format(target))
