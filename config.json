@@ -16,5 +16,8 @@
         "delay": 1,
         "max_attempts": 3,
         "increase_delay_on_fail": true
-    }
+	},
+	"downloader": {
+		"download_folder": "/home/wayback/files"
+	}
 }
