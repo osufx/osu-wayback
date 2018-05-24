@@ -1,1 +1,10 @@
-{"scrape": {"last": 0, "failed": []}}
+{
+	"scrape": {
+		"last": 0,
+		"failed": []
+	},
+	"downloader": {
+		"last": 0,
+		"failed": []
+	}
+}
