@@ -19,5 +19,9 @@
 	},
 	"downloader": {
 		"download_folder": "/home/wayback/files"
-	}
+    },
+    "zipper": {
+        "temp_folder": "/home/wayback/tmp",
+        "output_folder": "/home/wayback/archive"
+    }
 }

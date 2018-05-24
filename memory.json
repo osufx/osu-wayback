@@ -6,5 +6,8 @@
 	"downloader": {
 		"last": 0,
 		"failed": []
+	},
+	"zipper": {
+		"last": 0
 	}
 }
