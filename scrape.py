@@ -62,6 +62,6 @@ while not finished:
                 extra_sleep = attempts
             print("target: {}, status: FAILED, attempt: {}".format(target, attempts))
         time.sleep(config["scrape"]["delay"] + extra_sleep)
-        if failed_streak > 10:
+        if failed_streak > 100:
             exit()
     memory["scrape"]["last"] = target
