@@ -3,6 +3,9 @@
 		"last": 0,
 		"failed": []
 	},
+	"version_scrape": {
+		"last": 0
+	},
 	"downloader": {
 		"last": 0,
 		"failed": []
