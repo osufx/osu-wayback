@@ -1,3 +1,5 @@
+from objects import glob
+
 allowed_args = ["file_hash", "file_version", "timestamp"]
 
 def handle(request):
@@ -11,7 +13,22 @@ def handle(request):
             break
 
     output = {
-        "search_method": method_name
+        "method": method_name,
+        "response": callback(method_name, request.args.get(method_name))
     }
-    output["endpoint"] = request.endpoint
     return output
+
+def callback(method, data):
+    cur = glob.sql.cursor()
+
+    if method is "file_hash":
+        cur.execute("SELECT * FROM updates WHERE file_hash = '{}'".format(
+            data
+        ))
+    else:
+        cur.execute("SELECT a.* FROM updates a INNER JOIN ( SELECT MAX(file_version) file_version, filename FROM updates WHERE {} < {} GROUP BY filename) b ON a.file_version = b.file_version;".format(
+            method,
+            data
+        ))
+
+    return cur.fetchall()
