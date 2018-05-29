@@ -21,14 +21,15 @@ def handle(request):
 def callback(method, data):
     cur = glob.sql.cursor()
 
-    if method is "file_hash":
-        cur.execute("SELECT * FROM updates WHERE file_hash = '{}'".format(
-            data
-        ))
-    else:
-        cur.execute("SELECT a.* FROM updates a INNER JOIN ( SELECT MAX(file_version) file_version, filename FROM updates WHERE {} < {} GROUP BY filename) b ON a.file_version = b.file_version;".format(
-            method,
-            data
-        ))
+    query = "SELECT a.* FROM updates a INNER JOIN ( SELECT MAX(file_version) file_version, filename FROM updates WHERE {} < {} GROUP BY filename) b ON a.file_version = b.file_version"
+    if method is "timestamp":
+        query += " ORDER BY a.timestamp DESC"
+    elif method is "file_hash":
+        query = "SELECT * FROM updates WHERE {} = '{}'"
+
+    cur.execute("SELECT a.* FROM updates a INNER JOIN ( SELECT MAX(file_version) file_version, filename FROM updates WHERE {} < {} GROUP BY filename) b ON a.file_version = b.file_version;".format(
+        method,
+        data
+    ))
 
     return cur.fetchall()
