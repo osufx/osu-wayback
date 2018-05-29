@@ -1,10 +1,13 @@
 #Used for scraping osu version names from osu.ppy.sh and storing them into self database
 
-import urllib.request, json
+import json
 import MySQLdb
 import MySQLdb.cursors
 import time, calendar, string
 import atexit
+
+# Because ppy site is dumb
+import requests
 
 with open("config.json", "r") as f:
     config = json.load(f)
@@ -25,69 +28,54 @@ atexit.register(on_close)
 
 #---------------------------------------
 
-VERSIONS = check("_") # Gets all versions
-BRANCH = {
-	"_": VERSIONS
-}
-SCAN = string.printable[:62] + "-+.:,"
+SCAN = "_" + string.printable[:62] + "-+.:,"
+NAMES = []
 
 def check(s):
-	return urllib.request.urlopen("https://osu.ppy.sh/web/get-internal-version.php?v={}".format(s)).read().decode()
+    o = requests.get("https://osu.ppy.sh/web/get-internal-version.php?v={}".format(s))
+    i = int(o.content.decode())
+    return i
 
-"""
-TMP = ""
-def scope(v):
-	global TMP
-	TMP = ""
-	o_key = ""
-	o_value = v["_"]
-	v = _scope(v)
-	print(v)
-	print(TMP)
-	print(o_key)
-	print(o_value)
+def scan_line(s):
+    global NAMES
+    data = {
+        "scan": [],
+        "items": 0
+    }
+    items_found = 0
+    current_string = s + "_"
+    for i in range(1, len(SCAN)):
+        r = check(current_string)
 
-def _scope(v):
-	global TMP
-	for key, value in v.items():
-		if type(value) is int:
-			if len(v) is 1:
-				return key
-			continue
-		TMP += key
-		return _scope(v[key])
-		
+        if current_string.endswith("_"):
+            data["items"] = r
+            if r is 0: # We hit the end! Add it to the entries list
+                c = current_string[:-1]
+                print("FOUND: {}".format(c))
+                cur.execute("INSERT INTO osu_builds (id,version) VALUES (NULL,%s)", [ c ])
+                sql.commit()
+                NAMES.append(c)
+                break
+        elif r > 0: # This is not the length scan and an entry was found so... we add it :D
+            print("Pending branch: {} ({} found)".format(current_string, r))
+            data["scan"].append(current_string)
+            items_found += r
 
-	return {o_key: o_value}
+        if items_found >= data["items"]: # We have all the entries for this branch
+            print("Found all items in branch: {} ({} found)".format(current_string[:-1], items_found))
+            break
 
-	OUT = ""
-	ENTRIES = v["_"]
-	for key, value in v.items():
-		if key is "_":
-			continue
-		elif type(value) is int:
-			return key
-		else:
-			S = scope(v[key])
-			OUT += key + S.keys()[0]
-			ENTRIES = S.values()[0]
-	return {OUT: ENTRIES}
-"""
+        current_string = current_string[:-1] + SCAN[i]
+    return data
 
-char_index = 0
-current_string = "_"
-while memory["version_scrape"]["last"] < VERSIONS:
-	
-	
-	"""
-	
-	s = scope(BRANCH)
-	if s.endswith("_"): # Branch into?
-		entries = BRANCH[s]
-		if entries is 0:
-			
-			continue # Meh... we are at the end
-	else:
-	"""
-			
-	#r = check()
+def branch(s):
+    scan_data = scan_line(s)
+    for item in scan_data["scan"]:
+        branch(item)
+
+branch("") # LEL INIT
+
+for entry in NAMES:
+    print(entry)
+
+print("DONE!")
