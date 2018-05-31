@@ -2,7 +2,7 @@ import json
 import MySQLdb
 import MySQLdb.cursors
 from flask import Flask, make_response, request, render_template, jsonify
-from handlers import update, file
+from handlers import getupdate, getfile
 from objects import glob
 
 app = Flask(__name__)
@@ -28,12 +28,12 @@ def api_index():
 
 @app.route("/api/getUpdate", methods=["GET", "POST"])
 def api_update():
-	data = update.handle(request)
+	data = getupdate.handle(request)
 	return jsonify(data)
 
 @app.route("/api/getFile", methods=["GET", "POST"])
 def api_file():
-	data = file.handle(request)
+	data = getfile.handle(request)
 	return jsonify(data)
 
 if __name__ == "__main__":

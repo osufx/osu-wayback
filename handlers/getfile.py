@@ -1,6 +1,6 @@
 from objects import glob
 
-allowed_args = ["file_hash", "id", "file_version", "timestamp"]
+allowed_args = ["file_hash", "file_version", "timestamp"]
 
 def handle(request):
     if len([x for x in request.args if x in allowed_args]) == 0:
