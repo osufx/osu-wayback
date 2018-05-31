@@ -1,1 +1,48 @@
-Unimplemented
+{% extends "layout.html" %}
+{% block headextra %}
+<style>
+	#bg::after {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		z-index: -1;
+		width: 100%;
+		height: 100%;
+		content: '';
+		background-size: cover;
+		background-image: url({{ url_for("static", filename="img/{}.jpg".format(range(1, 17) | random)) }});
+	}
+</style>
+{% endblock %}
+
+{% block body %}
+
+<div class="ui vertical masthead center aligned segment" id="bg">
+	{% include "header.html" %}
+	<div class="ui text container">
+		<h1 class="ui inverted header">
+			osu!wayback API
+		</h1>
+		<h2 class="ui inverted header">
+			{{
+				[
+					"For your application",
+					"Open database",
+					"Transparent"
+				] | random
+			}}
+		</h2>
+	</div>
+</div>
+
+<div class="ui vertical stripe segment">
+	<div class="ui middle aligned stackable grid container">
+		<div class="row">
+{% for route in self._TemplateReference__context.environment.app.url_map.iter_rules() if route.endpoint.startswith("api_") %}
+    {{ route.rule }}<br>
+{% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
