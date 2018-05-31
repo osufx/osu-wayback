@@ -15,11 +15,7 @@ def handle(request):
         if method is not None:
             break
 
-    output = {
-        "method": method_name,
-        "response": callback(method_name, request.args.get(method_name))
-    }
-    return output
+    return callback(method_name, request.args.get(method_name))
 
 def callback(method, data):
     cur = glob.sql.cursor()

@@ -15,13 +15,9 @@ def handle(request):
         if method is not None:
             break
 
-    output = {
-        "method": method_name,
-        "response": callback(method_name, request.args.get(method_name))
-    }
-    return output
+    return callback(method_name)
 
-def callback(method, data):
+def callback(method):
     cur = glob.sql.cursor()
 
     cur.execute("SELECT {} FROM updates WHERE filename = 'osu!.exe' ORDER BY file_version".format(
