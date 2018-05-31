@@ -28,11 +28,13 @@ def api_index():
 
 @app.route("/api/getUpdate", methods=["GET", "POST"])
 def api_update():
-	return update.handle(request)
+	data = update.handle(request)
+	return jsonify(data)
 
 @app.route("/api/getFile", methods=["GET", "POST"])
 def api_file():
-	return file.handle(request)
+	data = file.handle(request)
+	return jsonify(data)
 
 if __name__ == "__main__":
 	app.run(**config["web"])
